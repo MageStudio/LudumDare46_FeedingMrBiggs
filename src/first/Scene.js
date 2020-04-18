@@ -22,12 +22,20 @@ import {
     getPositionFromIndex,
     getInitialPlayerPositionForLevel,
     removeCrateBox,
-    getFoodCratePositionFromIndex
+    getFoodCratePositionFromIndex,
+    CENTER
 } from '../levels';
 
 import PlayerScript from '../playerScript';
 import FloatScript from '../floatScript';
 import CrateScript from '../crateScript';
+
+import {
+    FEEDING,
+    CRATE_FOUND,
+    UPDATE_RELATIVE_POSITION,
+    COLLECTED
+} from '../constants';
 
 import MainMenu from '../ui/MainMenu';
 
@@ -93,27 +101,35 @@ export default class FlatGrid extends BaseScene {
 
         this.player.addScript('playerScript');
 
-        this.player.addEventListener('crateFound', this.handleCrateFound);
+        this.player.addEventListener(CRATE_FOUND, this.handleCrateFound);
+        this.player.addEventListener(FEEDING, this.handleFeeding);
     }
 
-    getCrateRelativePosition = () => {
-        return {
-            x: 0,
-            y: this.collected.length + 0.5,
-            z: 0
-        };s
-    }
+    handleFeeding = () => {
+        console.log('maybe feeding');
+        if (this.collected.length) {
+            const crate = this.collected[0];
+            this.collected = this.collected.slice(1);
+
+            console.log('feeding', this.collected, crate);
+
+            // check if type matches the type the monster wants
+            crate.dispose();
+            
+        }
+    };
 
     handleCrateFound = ({ row, col }) => {
         const index = this.crates.findIndex(c => c.index.row == row && c.index.col === col);
         const crate = this.crates[index];
 
-        crate.collected = true;
-
         removeCrateBox(LEVEL, row, col);
         this.collected.push(crate);
 
-        crate.position(this.getCrateRelativePosition());
+        crate.dispatchEvent({
+            type: COLLECTED,
+            length: this.collected.length
+        });
 
         this.player.add(crate);
     }

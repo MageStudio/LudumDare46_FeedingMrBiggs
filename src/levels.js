@@ -33,19 +33,32 @@ export const DIRECTIONS_MAP = {
     }
 }
 
+const TARGET = 9;
+const EMPTY = 0;
+const BLOCK = 1;
+
+const CORN = 2;
+const BURGER = 3;
+const APPLE = 4;
+const PIZZA = 5;
+const ORANGE = 6;
+const PASTA = 7;
+
+const FOODS = [CORN, BURGER, APPLE, PIZZA, ORANGE, PASTA];
+
 const level1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 1, 1, 1, 2, 0, 0],
+    [0, 0, 0, 2, 1, 1, 2, 0, 0],
     [0, 0, 0, 1, 0, 1, 1, 0, 0],
-    [0, 0, 0, 1, 0, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0, 9, 0, 0, 0],
     [0, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
-const level1PlayerPosition = { row: 7, col: 4 };
-const level1PlayerDirection = { ...DIRECTIONS.LEFT };
+const level1PlayerPosition = { row: 5, col: 3 };
+const level1PlayerDirection = { ...DIRECTIONS.UP };
 
 const levels = [
     level1
@@ -89,7 +102,7 @@ export const getNewDirection = (old, action) => {
     return DIRECTIONS_MAP[old][action];
 }
 
-const CENTER = { row: 4, col: 4 };
+export const CENTER = { row: 4, col: 4 };
 const SIZE = 10;
 export const getPositionFromIndex = (row, col) => {
     return {
@@ -99,10 +112,11 @@ export const getPositionFromIndex = (row, col) => {
     }
 }
 
-export const isAllowedMove = (level, row, col) => levels[level][row][col] > 0;
-export const isCrateBox = (level, row, col) => levels[level][row][col] > 1;
+export const isAllowedMove = (level, row, col) => levels[level][row][col] > EMPTY;
+export const isCrateBox = (level, row, col) => FOODS.includes(levels[level][row][col]);
+export const isTarget = (level, row, col) => levels[level][row][col] === TARGET;
 
-export const removeCrateBox = (level, row, col) => levels[level][row][col] = 1;
+export const removeCrateBox = (level, row, col) => levels[level][row][col] = BLOCK;
 
 export const getRandomRotation = () => {
     const ANGLES = [-Math.PI, -Math.PI/2, Math.PI/2, Math.PI];

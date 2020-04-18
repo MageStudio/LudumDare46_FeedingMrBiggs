@@ -15,6 +15,7 @@ import {
     getPlayerPositionFromIndex,
     getNewDirection,
     isCrateBox,
+    isTarget,
     DIRECTIONS,
     DOWN,
     UP,
@@ -22,7 +23,7 @@ import {
     RIGHT
 } from './levels';
 
-import { CRATE_FOUND } from './constants';
+import { CRATE_FOUND, FEEDING } from './constants';
 
 export default class PlayerScript extends BaseScript {
 
@@ -49,19 +50,22 @@ export default class PlayerScript extends BaseScript {
         this.moving = false;
         this.pressing = false;
 
-        Input.addEventListener('keyDown', debounce(this.handleKeyDown.bind(this), 200));
-        Input.addEventListener('keyUp', this.handleKeyUp.bind(this));
+        Input.addEventListener('keyDown', debounce(this.handleKeyDown, 200));
+        Input.addEventListener('keyUp', this.handleKeyUp);
     }
 
     handleKeyUp() {
         this.pressing = false;
     }
 
-    handleKeyDown(e) {
+    handleKeyDown = (e) => {
         const forward = e.event.keyCode === 87;
         const backwards = e.event.keyCode === 83;
         const right = e.event.keyCode === 68;
         const left = e.event.keyCode === 65;
+
+        const tryingToFeed = e.event.keyCode === 70;
+
         console.log('inside handle keydown', e);
 
         this.pressing = forward || backwards || right || left;
@@ -78,6 +82,8 @@ export default class PlayerScript extends BaseScript {
             console.log(this.currentDirection);
         } else if (forward) {
             this.currentDirection = DIRECTIONS.UP;
+        } else if (tryingToFeed) {
+            this.checkIfOnTarget();
         }
     }
 
@@ -89,6 +95,15 @@ export default class PlayerScript extends BaseScript {
             row: row + rowDir,
             col: col + colDir
         };
+    }
+
+    checkIfOnTarget = () => {
+        if (isTarget(this.mesh.level, this.currentIndex.row, this.currentIndex.col)) {
+            console.log('robot on target');
+            this.mesh.dispatchEvent({
+                type: FEEDING
+            });
+        }
     }
 
     checkIfCrateBox() {
