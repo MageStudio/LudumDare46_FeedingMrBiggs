@@ -36,7 +36,7 @@ export const DIRECTIONS_MAP = {
 const level1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 1, 1, 1, 1, 0, 0],
+    [0, 0, 0, 1, 1, 1, 2, 0, 0],
     [0, 0, 0, 1, 0, 1, 1, 0, 0],
     [0, 0, 0, 1, 0, 1, 0, 0, 0],
     [0, 0, 0, 1, 0, 0, 0, 0, 0],
@@ -99,8 +99,10 @@ export const getPositionFromIndex = (row, col) => {
     }
 }
 
-export const isAllowedMove = (level, row, col) => levels[level][row][col] === 1;
+export const isAllowedMove = (level, row, col) => levels[level][row][col] > 0;
+export const isCrateBox = (level, row, col) => levels[level][row][col] > 1;
 
+export const removeCrateBox = (level, row, col) => levels[level][row][col] = 1;
 
 export const getRandomRotation = () => {
     const ANGLES = [-Math.PI, -Math.PI/2, Math.PI/2, Math.PI];
@@ -112,3 +114,8 @@ export const getRandomRotation = () => {
         y: ANGLES[randomIndex]
     };
 }
+
+export const getFoodCratePositionFromIndex = (row, col) => ({
+    ...getPositionFromIndex(row, col),
+    y: 3
+})

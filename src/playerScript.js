@@ -14,11 +14,15 @@ import {
     isAllowedMove,
     getPlayerPositionFromIndex,
     getNewDirection,
+    isCrateBox,
+    DIRECTIONS,
     DOWN,
     UP,
     LEFT,
     RIGHT
 } from './levels';
+
+import { CRATE_FOUND } from './constants';
 
 export default class PlayerScript extends BaseScript {
 
@@ -31,6 +35,11 @@ export default class PlayerScript extends BaseScript {
 
         this.mesh = mesh;
 
+        this.mesh.setColliders(
+            [constants.VECTOR_FRONT],
+            [{ far: 8, near: 0}]
+        );
+
         this.currentDirection = getInitialPlayerDirection(this.mesh.level);
         this.currentIndex = getInitialPlayerIndex(this.mesh.level);
         this.currentPosition = getInitialPlayerPositionForLevel(this.mesh.level);
@@ -38,38 +47,37 @@ export default class PlayerScript extends BaseScript {
         this.mesh.position(this.currentPosition);
 
         this.moving = false;
-        this.maxSpeed = 10;
-        this.maxReverseSpeed = -this.maxSpeed;
-
-        this.forward = false;
-        this.backwards = false;
-        this.left = false;
-        this.right = false;
-
-        this.speed = 0;
-        this.speed_y = 0;
-        this.orientation = 0;
+        this.pressing = false;
 
         Input.addEventListener('keyDown', debounce(this.handleKeyDown.bind(this), 200));
+        Input.addEventListener('keyUp', this.handleKeyUp.bind(this));
+    }
+
+    handleKeyUp() {
+        this.pressing = false;
     }
 
     handleKeyDown(e) {
-        this.forward = e.event.keyCode === 87;
-        this.backwards = e.event.keyCode === 83;
-        this.right = e.event.keyCode === 68;
-        this.left = e.event.keyCode === 65;
+        const forward = e.event.keyCode === 87;
+        const backwards = e.event.keyCode === 83;
+        const right = e.event.keyCode === 68;
+        const left = e.event.keyCode === 65;
         console.log('inside handle keydown', e);
 
-        if (this.backwards) {
-            this.currentDirection = getNewDirection(this.currentDirection.type, DOWN)
+        this.pressing = forward || backwards || right || left;
+
+        if (backwards) {
+            this.currentDirection = DIRECTIONS.DOWN;//getNewDirection(this.currentDirection.type, DOWN)
             console.log(this.currentDirection);
 
-        } else if (this.right) {
-            this.currentDirection = getNewDirection(this.currentDirection.type, RIGHT);
+        } else if (right) {
+            this.currentDirection = DIRECTIONS.RIGHT;//getNewDirection(this.currentDirection.type, RIGHT);
             console.log(this.currentDirection);
-        } else if (this.left) {
-            this.currentDirection = getNewDirection(this.currentDirection.type, LEFT);
+        } else if (left) {
+            this.currentDirection = DIRECTIONS.LEFT;//getNewDirection(this.currentDirection.type, LEFT);
             console.log(this.currentDirection);
+        } else if (forward) {
+            this.currentDirection = DIRECTIONS.UP;
         }
     }
 
@@ -83,9 +91,18 @@ export default class PlayerScript extends BaseScript {
         };
     }
 
+    checkIfCrateBox() {
+        if (isCrateBox(this.mesh.level, this.currentIndex.row, this.currentIndex.col)) {
+            this.mesh.dispatchEvent({
+                type: CRATE_FOUND,
+                ...this.currentIndex
+            });
+        }
+    }
+
     updatePosition(dt) {
 
-        if (!this.moving && this.forward) {
+        if (!this.moving && this.pressing) {
 
             const newIndex = this.calculateNewIndex(this.currentIndex, this.currentDirection);
 
@@ -94,11 +111,13 @@ export default class PlayerScript extends BaseScript {
                 this.currentPosition = getPlayerPositionFromIndex(this.currentIndex.row, this.currentIndex.col);
             }
 
-
             this.moving = true;
+            this.pressing = false;
             this.mesh.goTo(this.currentPosition, 300).then(() => {
                 this.moving = false;
-                this.forward = false;
+                this.pressing = false;
+
+                this.checkIfCrateBox();
             });
         }
     }
@@ -109,6 +128,6 @@ export default class PlayerScript extends BaseScript {
     }
 
     update(dt) {
-        this.updatePosition(dt)
+        this.updatePosition(dt);
     }
 }
