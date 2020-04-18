@@ -1,0 +1,4 @@
+{
+    "name": "FeedingMrBiggs",
+    "routes": [{ "src": "/", "dest": "/index.html" }]
+}
