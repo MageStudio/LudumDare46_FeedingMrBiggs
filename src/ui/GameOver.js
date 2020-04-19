@@ -19,7 +19,7 @@ export default class GameOver extends Component {
                         <h1>Game Over :(</h1>
                     </div>
                     <div className={'details'}>
-                        <h3>{score}</h3>
+                        <h3 className={'score'}>{score}</h3>
                         <div className={'action'}>
                             <button className={'action-button'} onClick={this.onClick}>
                                 Try Again?

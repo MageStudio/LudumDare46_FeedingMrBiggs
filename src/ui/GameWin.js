@@ -22,7 +22,7 @@ export default class GameWin extends Component {
                         <h1>Nice!</h1>
                     </div>
                     <div className={'details'}>
-                        <h3>{score}</h3>
+                        <h3 className={'score'}>{score}</h3>
                         <div className={'action'}>
                             <button className={'action-button'} onClick={this.onClick}>
                                Next

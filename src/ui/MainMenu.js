@@ -17,12 +17,17 @@ const getOptions = (onStartClick, onAboutClick) => (
 
 const getAbout = (onAboutClose) => (
     <div>
-        <h3>
-            Built with mage Engine. By Marco Stagni
+        <h3 className={'author'}>
+            Built with <a href={'https://github.com/MageStudio/Mage'} target={'_blank'}>Mage Engine</a>.
+            <br/>
+            <br/>
+            By <a href={'http://www.marcostagni.com'} target={'_blank'}>Marco Stagni</a>.
         </h3>
-        <button onClick={onAboutClose}>
-            BACK
-        </button>
+        <div className={'action'}>
+            <button className={'action-button'} onClick={onAboutClose}>
+                Back
+            </button>
+        </div>
     </div>
 )
 
