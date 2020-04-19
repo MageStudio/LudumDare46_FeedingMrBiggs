@@ -8,7 +8,14 @@ export default class Tutorial extends Component {
 
     componentDidMount() {
         const { onCloseMenu } = this.props;
-        setTimeout(onCloseMenu, 15000);
+        this.timeout = setTimeout(onCloseMenu, 15000);
+    }
+
+    onSkipClick = () => {
+        const { onCloseMenu } = this.props;
+
+        clearTimeout(this.timeout);
+        onCloseMenu();
     }
 
     render() {
@@ -20,10 +27,10 @@ export default class Tutorial extends Component {
                     </div>
                     <div className={'details'}>
                         <p className={'introduction'}>
-                            Your job is to feed our lovely Mr Biggs. He's a very precious specimen, and it's the last of his species.
+                            Your job is to feed our lovely Mr Biggs. He's a very precious specimen, and he's the last of his species.
                             He gets hungry very easily, so get his food and bring it to the collection point.
                             <br/>
-                            Give it the food it wants, and your score will be higher! Remember, keep it alive!
+                            Give him the food he wants, and your score will be higher! Remember, keep him alive!
                             <span className={'disclaimer'}>
                                 This message will disappear in 15 seconds.
                             </span>
@@ -38,6 +45,12 @@ export default class Tutorial extends Component {
                                 <span>Feeding:</span>
                                 <img className={'f'} src={'assets/textures/f.png'}/>
                             </div>
+                        </div>
+
+                        <div className={'action'}>
+                            <button className={'action-button'} onClick={this.onSkipClick}>
+                                Skip
+                            </button>
                         </div>
                     </div>
                 </div>
