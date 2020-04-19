@@ -20,7 +20,12 @@ const assets = {
     Scripts: {},
 
     Textures: {
-        'corn.crate': 'assets/textures/corn_crate.jpg'
+        'corn.crate': 'assets/textures/corn_crate.jpg',
+        'apple.crate': 'assets/textures/apple_crate.jpg',
+        'pizza.crate': 'assets/textures/pizza_crate.jpg',
+        'pasta.crate': 'assets/textures/pasta_crate.jpg',
+        'burger.crate': 'assets/textures/burger_crate.jpg',
+        'orange.crate': 'assets/textures/orange_crate.jpg'
     },
 
     Models: {
@@ -63,5 +68,8 @@ const config = {
 
 window.addEventListener('load', function() {
     Router.on('/', Scene);
+    Router.on('/1', Scene);
+    Router.on('/2', Scene);
+    Router.on('/3', Scene);
     Router.start(config, assets, '#gameContainer');
 });

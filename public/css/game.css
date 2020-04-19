@@ -117,6 +117,10 @@
     font-family: Pacifico, sans-serif;
 }
 
+.title-container.endgame {
+    font-size: 78px;
+}
+
 .dialog.menu-container .title-container h1::before {
     content: 'Ludum Dare 46:';
     font-family: Anton, monospace;
@@ -153,4 +157,55 @@
 
 .dialog .author a {
     color: #38ada9 !important;
+}
+
+.tutorial .title-container {
+    height: 20%;
+}
+
+.tutorial h1 {
+    margin: 8px !important;
+    font-size: 48px;
+}
+
+.tutorial .introduction {
+    margin: 0;
+    font-size: 24px;
+}
+
+.tutorial .details {
+    top: 30%;
+}
+
+.tutorial .images {
+    height: 100%;
+    display: block;
+    width: 100%;
+    position: relative;
+    top: 80px;
+}
+
+.tutorial .disclaimer {
+    font-size: 12px;
+    float: right;
+    margin: 16px;
+}
+
+.tutorial .img-container {
+    width: auto;
+    position: relative;
+    float: left;
+    height: auto;
+}
+
+.tutorial .images .wasd {
+    height: 100px;
+    margin-right: 70px;
+    margin-left: 36px;
+}
+
+.tutorial .images .f {
+    margin-top: 35px;
+    margin-right: 70px;
+    margin-left: 36px;
 }

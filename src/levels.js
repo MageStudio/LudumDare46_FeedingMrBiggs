@@ -37,30 +37,26 @@ const TARGET = 9;
 const EMPTY = 0;
 const BLOCK = 1;
 
-const CORN = 2;
-const CORN_LABEL = 'corn';
+export const CORN = 2;
+export const CORN_LABEL = 'corn';
 
-const BURGER = 3;
-const BURGER_LABEL = 'burger';
+export const BURGER = 3;
+export const BURGER_LABEL = 'burger';
 
-const APPLE = 4;
-const APPLE_LABEL = 'apple';
+export const APPLE = 4;
+export const APPLE_LABEL = 'apple';
 
-const PIZZA = 5;
-const PIZZA_LABEL = 'pizza';
+export const PIZZA = 5;
+export const PIZZA_LABEL = 'pizza';
 
-const ORANGE = 6;
-const ORANGE_LABEL = 'orange';
+export const ORANGE = 6;
+export const ORANGE_LABEL = 'orange';
 
-const PASTA = 7;
-const PASTA_LABEL = 'pasta';
+export const PASTA = 7;
+export const PASTA_LABEL = 'pasta';
 
 export const FOODS = [CORN, BURGER, APPLE, PIZZA, ORANGE, PASTA];
 export const FOODS_TYPES = [CORN_LABEL, BURGER_LABEL, APPLE_LABEL, PIZZA_LABEL, ORANGE_LABEL, PASTA_LABEL];
-
-export const foodLevels = [
-    [CORN_LABEL]
-];
 
 export const pickRandomFood = (level) => {
     const available = foodLevels[level];
@@ -69,7 +65,7 @@ export const pickRandomFood = (level) => {
     return available[index];
 };
 
-const level1 = [
+const level0 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 1, 0, 0],
     [0, 0, 0, 2, 1, 1, 2, 0, 0],
@@ -80,19 +76,81 @@ const level1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
-const level1PlayerPosition = { row: 5, col: 3 };
+
+const level1 = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 1, 0, 0],
+    [0, 0, 0, 1, 1, 4, 0, 0, 0],
+    [0, 0, 1, 2, 1, 1, 5, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 9, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+
+const level2 = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 2, 0, 0],
+    [0, 0, 1, 1, 1, 1, 0, 0, 0],
+    [0, 0, 1, 0, 1, 1, 3, 0, 0],
+    [0, 0, 1, 9, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+
+const level3 = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 6, 7, 0, 0],
+    [0, 0, 0, 4, 1, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 3, 0, 0],
+    [0, 0, 0, 9, 0, 1, 0, 0, 0],
+    [0, 0, 0, 1, 2, 1, 5, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+const level0PlayerPosition = { row: 5, col: 3 };
+const level0PlayerDirection = { ...DIRECTIONS.UP };
+
+const level1PlayerPosition = { row: 5, col: 2 };
 const level1PlayerDirection = { ...DIRECTIONS.UP };
 
+const level2PlayerPosition = { row: 5, col: 2 };
+const level2PlayerDirection = { ...DIRECTIONS.UP };
+
+const level3PlayerPosition = { row: 6, col: 3 };
+const level3PlayerDirection = { ...DIRECTIONS.UP };
+
+
 const levels = [
-    level1
+    level0,
+    level1,
+    level2,
+    level3
 ];
 
 const playerPositions = [
-    level1PlayerPosition
+    level0PlayerPosition,
+    level1PlayerPosition,
+    level2PlayerPosition,
+    level3PlayerPosition
 ];
 
 const playerDirections = [
-    level1PlayerDirection
+    level0PlayerDirection,
+    level1PlayerDirection,
+    level2PlayerDirection,
+    level3PlayerDirection
+];
+
+export const foodLevels = [
+    [CORN_LABEL],
+    [CORN_LABEL, APPLE_LABEL, PIZZA_LABEL],
+    [CORN_LABEL, BURGER_LABEL],
+    [BURGER_LABEL, APPLE_LABEL, PIZZA_LABEL, ORANGE_LABEL, PASTA_LABEL]
 ];
 
 export const getLevelDescription = (id) => {
@@ -155,4 +213,13 @@ export const getRandomRotation = () => {
 export const getFoodCratePositionFromIndex = (row, col) => ({
     ...getPositionFromIndex(row, col),
     y: 3
-})
+});
+
+export const parseScore = (score) => {
+    const split = String(score).split('.');
+    const getDecimals = value => value.length ? value : '0';
+
+    return split.length > 1 ?
+        `${split[0]}.${getDecimals(split[1])}` :
+        `${split[0]}`;
+};

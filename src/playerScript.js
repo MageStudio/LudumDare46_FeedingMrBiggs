@@ -19,7 +19,7 @@ import {
     DIRECTIONS
 } from './levels';
 
-import { CRATE_FOUND, FEEDING } from './constants';
+import {CRATE_FOUND, FEEDING, PLAYER_GAME_WIN} from './constants';
 import {playerMovement} from './ui/actions/game';
 
 export default class PlayerScript extends BaseScript {
@@ -46,9 +46,16 @@ export default class PlayerScript extends BaseScript {
 
         this.moving = false;
         this.pressing = false;
+        this.over = false;
 
-        Input.addEventListener('keyDown', debounce(this.handleKeyDown, 200));
+        this.mesh.addEventListener(PLAYER_GAME_WIN, this.handleWin);
+
+        Input.addEventListener('keyDown', debounce(this.handleKeyDown, 50));
         Input.addEventListener('keyUp', this.handleKeyUp);
+    }
+
+    handleWin = () => {
+        this.over = true;
     }
 
     handleKeyUp() {
@@ -113,7 +120,10 @@ export default class PlayerScript extends BaseScript {
     }
 
     playMovementSound() {
-        new Sound('movement').start();
+        const sound = new Sound('movement');
+        sound.setVolume(0.8);
+
+        sound.start();
     }
 
     updatePosition(dt) {
@@ -146,6 +156,8 @@ export default class PlayerScript extends BaseScript {
     }
 
     update(dt) {
-        this.updatePosition(dt);
+        if (!this.over) {
+            this.updatePosition(dt);
+        }
     }
 }

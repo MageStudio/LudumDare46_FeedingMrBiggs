@@ -41,8 +41,11 @@ export default class HungerBar extends Component {
         this.intervalId = null;
     }
 
-    componentDidUpdate() {
-        if (this.props.over || this.props.win) {
+    componentDidUpdate({ level }) {
+        const { level: currentLevel } = this.props;
+        const isNotSameLevel = level !== currentLevel;
+
+        if (this.props.over || this.props.win || isNotSameLevel) {
             clearInterval(this.intervalId);
         }
     }
@@ -59,7 +62,7 @@ export default class HungerBar extends Component {
 
         onHungerIncrease(newHunger);
 
-        if (newHunger > 100) {
+        if (newHunger >= 100) {
             onHungerMax();
             clearInterval(this.intervalId);
         }

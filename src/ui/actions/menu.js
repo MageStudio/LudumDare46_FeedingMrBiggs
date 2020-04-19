@@ -2,7 +2,8 @@ import {
     CLOSE_MENU,
     OPEN_MENU,
     OPEN_ABOUT,
-    CLOSE_ABOUT
+    CLOSE_ABOUT,
+    OPEN_TUTORIAL
 } from './types';
 
 export const openMenu = () => ({
@@ -19,4 +20,8 @@ export const openAbout = () => ({
 
 export const closeAbout = () => ({
     type: CLOSE_ABOUT
+});
+
+export const openTutorial = () => ({
+    type: OPEN_TUTORIAL
 });

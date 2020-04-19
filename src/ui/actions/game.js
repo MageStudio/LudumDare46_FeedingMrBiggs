@@ -11,9 +11,14 @@ import {
 import {pickRandomFood} from '../../levels';
 
 export const startGame = (level) => {
+    const rate = 5 + Number(level) / 3;
+    const interval = 3000 - (Number(level) * 50);
+
     return {
         type: START_GAME,
-        level
+        level,
+        rate,
+        interval
     }
 };
 

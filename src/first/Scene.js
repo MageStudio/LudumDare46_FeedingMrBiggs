@@ -22,7 +22,19 @@ import {
     getLevelDescription,
     getPositionFromIndex,
     removeCrateBox,
-    getFoodCratePositionFromIndex
+    getFoodCratePositionFromIndex,
+    CORN,
+    PIZZA_LABEL,
+    PIZZA,
+    CORN_LABEL,
+    BURGER,
+    BURGER_LABEL,
+    APPLE_LABEL,
+    APPLE,
+    ORANGE_LABEL,
+    ORANGE,
+    PASTA,
+    PASTA_LABEL
 } from '../levels';
 
 import PlayerScript from '../playerScript';
@@ -35,10 +47,12 @@ import {
     FEEDING,
     CRATE_FOUND,
     UPDATE_RELATIVE_POSITION,
-    COLLECTED
+    COLLECTED, PLAYER_GAME_WIN
 } from '../constants';
 
 import UI from '../ui/UI';
+import {closeMenu, openMenu} from '../ui/actions/menu';
+import {GAME_WIN} from '../ui/actions/types';
 
 const WHITE = 0Xffffff;
 const BACKGROUND = 0xb8e994;
@@ -70,20 +84,20 @@ export default class MrBiggs extends BaseScene {
         loader.classList.remove('fadeout', 'invisible');
         setTimeout(() => {
             loader.classList.add('fadeout');
+            callback();
         }, 5000);
         setTimeout(() => {
             loader.classList.add('invisible');
         }, 6000);
-        callback();
     };
 
     setUpCamera = () => {
         window.camera = SceneManager.camera;
-        SceneManager.camera.position({ y: 15, z: 13 });
+        SceneManager.camera.position({ y: 19, z: 17 });
         SceneManager.camera.lookAt(0, 0, 0);
     };
 
-    createPlayer(id) {
+    createPlayer() {
         this.player = ModelsEngine.getModel('player');
         this.player.level = this.level;
         this.player.addScript('playerScript');
@@ -126,7 +140,10 @@ export default class MrBiggs extends BaseScene {
         if (this.crates.length === 0 &&
             this.collected.length === 0 &&
             hunger < 100) {
-            store.dispatch(gameWin(hunger))
+            store.dispatch(gameWin(hunger));
+            this.player.dispatchEvent({
+                type: PLAYER_GAME_WIN
+            });
         }
     }
 
@@ -159,7 +176,7 @@ export default class MrBiggs extends BaseScene {
     }
 
     createFoodCrate(row, col, type = 'corn') {
-        const crate = this.sceneHelper.addCube(1, WHITE);
+        const crate = this.sceneHelper.addCube(1.5, WHITE);
         const position = getFoodCratePositionFromIndex(row, col);
 
         crate.setName('crate');
@@ -174,8 +191,8 @@ export default class MrBiggs extends BaseScene {
         this.crates.push(crate);
     }
 
-    setUpLevel(id) {
-        const description = getLevelDescription(id);
+    setUpLevel() {
+        const description = getLevelDescription(this.level);
         const models = [];
 
         description.forEach((row, rowIndex) => {
@@ -187,21 +204,38 @@ export default class MrBiggs extends BaseScene {
                 model.position(position);
                 models.push(model);
 
-                if (el === 2) {
-                    this.createFoodCrate(rowIndex, colIndex, 'corn');
+                if (el === CORN) {
+                    this.createFoodCrate(rowIndex, colIndex, CORN_LABEL);
                 }
 
-                if (el === 3) {
-                    this.createFoodCrate(rowIndex, colIndex, 'pizza');
+                if (el === PIZZA) {
+                    this.createFoodCrate(rowIndex, colIndex, PIZZA_LABEL);
                 }
+
+                if (el === BURGER) {
+                    this.createFoodCrate(rowIndex, colIndex, BURGER_LABEL);
+                }
+
+                if (el === APPLE) {
+                    this.createFoodCrate(rowIndex, colIndex, APPLE_LABEL);
+                }
+
+                if (el === ORANGE) {
+                    this.createFoodCrate(rowIndex, colIndex, ORANGE_LABEL);
+                }
+
+                if (el === PASTA) {
+                    this.createFoodCrate(rowIndex, colIndex, PASTA_LABEL);
+                }
+
 
             });
         });
     }
 
-    setUpRandomFood = (level) => {
+    setUpRandomFood = () => {
         this.randomFoodInterval = setInterval(() => {
-            store.dispatch(changeFood(level));
+            store.dispatch(changeFood(this.level));
         }, 3000);
     }
 
@@ -222,6 +256,7 @@ export default class MrBiggs extends BaseScene {
     }
 
     onStateChange = ({ game }) => {
+        console.log(game);
         if (game.over) {
             clearInterval(this.randomFoodInterval);
             this.playLoseSound();
@@ -234,11 +269,17 @@ export default class MrBiggs extends BaseScene {
     onCreate() {
         this.crates = [];
         this.collected = [];
-        const { lvl = 0 } = this.options;
+        const { path = 0 } = this.options;
+        console.log(this.options);
+        this.level = Number(path.replace('/', '')) || 0;
 
-        this.level = lvl;
+        store.dispatch(startGame(this.level));
 
-        store.dispatch(startGame(lvl));
+        if (this.level === 0) {
+            store.dispatch(openMenu());
+        } else {
+            store.dispatch(closeMenu());
+        }
 
         ControlsManager.setOrbitControl();
         SceneManager.setShadowType('basic');
@@ -254,11 +295,11 @@ export default class MrBiggs extends BaseScene {
         this.addSunlight();
         this.setUpCamera();
 
-        this.setUpLevel(lvl);
-        this.createPlayer(lvl);
-        this.setUpRandomFood(lvl);
+        this.setUpLevel();
+        this.createPlayer();
+        this.setUpRandomFood();
 
-        this.enableUI(UI);
+        this.enableUI(UI, { level: this.level });
 
         PostProcessingEngine.add('HueSaturationEffect', { hue: 0.1, saturation: 0.3 });
         PostProcessingEngine.add('DepthOfField', { focus: 19.85, aperture: 0.0001, maxblur: 0.008 });

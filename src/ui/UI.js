@@ -1,12 +1,13 @@
 import { Component } from 'inferno';
 import { connect } from 'mage-engine';
 
-import {closeAbout, closeMenu, openAbout} from './actions/menu';
+import {closeAbout, closeMenu, openAbout, openTutorial} from './actions/menu';
 import MainMenu from './MainMenu';
 import HungerBar from './HungerBar';
 import {gameOver, hungerIncrease} from './actions/game';
 import GameOver from './GameOver';
 import GameWin from './GameWin';
+import Tutorial from './Tutorial';
 
 class UI extends Component {
 
@@ -43,19 +44,20 @@ class UI extends Component {
 
 
     render() {
-        const { onCloseMenu, onCloseAbout, onOpenAbout, menu, game } = this.props;
-        const { over, win, score, level } = game;
-        const { open = false, about = false } = menu;
+        const { onShowTutorial, onCloseMenu, onCloseAbout, onOpenAbout, menu, game } = this.props;
+        const { over = false, win = false, score, level } = game;
+        const { open = false, about = false, showTutorial = false } = menu;
 
         return (
             <div>
                 <MainMenu
                     about={about}
                     visible={open}
-                    onStartClick={onCloseMenu}
+                    onStartClick={onShowTutorial}
                     onAboutClick={onOpenAbout}
                     onAboutClose={onCloseAbout}
                 />
+                { showTutorial && <Tutorial onCloseMenu={onCloseMenu}/> }
                 { !open && this.getContent()}
                 { over && <GameOver score={score}/> }
                 { win && <GameWin score={score} level={level}/> }
@@ -78,6 +80,7 @@ const mapDispatchToProps = (dispatch) => {
         onOpenAbout: () => dispatch(openAbout()),
         onCloseAbout: () => dispatch(closeAbout()),
         onHungerMax: () => dispatch(gameOver()),
+        onShowTutorial: () => dispatch(openTutorial()),
         onHungerIncrease: (hunger) => dispatch(hungerIncrease(hunger))
     };
 };

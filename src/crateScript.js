@@ -7,8 +7,7 @@ import {
     COLLECTED
 } from './constants';
 
-const increase = 0.1;
-
+const increase = 0.05;
 
 export default class CrateScript extends BaseScript {
 

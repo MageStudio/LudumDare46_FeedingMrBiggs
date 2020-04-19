@@ -11,7 +11,7 @@ import {
 
 const DEFAULT_STATE = {
     hunger: 0,
-    interval: 2000,
+    interval: 3000,
     rate: 5, // will add 5% every interval
     food: 'corn',
     over: false,
@@ -20,10 +20,10 @@ const DEFAULT_STATE = {
     level: 0
 };
 
-const GOOD_FOOD_DEC = 5;
+const GOOD_FOOD_DEC = 10;
 const MAX_HUNGER = 100;
-const BAD_FOOD_INC = 10;
-const MOVEMENT_INC = 5;
+const BAD_FOOD_INC = 2;
+const MOVEMENT_INC = 2;
 
 export default (state = DEFAULT_STATE, action) => {
     switch(action.type) {
@@ -37,7 +37,7 @@ export default (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 hunger: state.hunger < (MAX_HUNGER - BAD_FOOD_INC) ? state.hunger + BAD_FOOD_INC : MAX_HUNGER,
-                score: state.score > (BAD_FOOD_INC * 10) ? state.score - (BAD_FOOD_INC * 10) : 0
+                score: state.score + (BAD_FOOD_INC * 10)//state.score > (BAD_FOOD_INC * 5) ? state.score - (BAD_FOOD_INC * 5) : 0
             };
         case CHANGE_FOOD:
             return {
@@ -53,8 +53,7 @@ export default (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 over: false,
-                win: true,
-                score: state.score - (action.hunger / 5)
+                win: true
             };
         case HUNGER_INCREASE:
             return {
@@ -69,7 +68,11 @@ export default (state = DEFAULT_STATE, action) => {
         case START_GAME:
             return {
                 ...DEFAULT_STATE,
-                level: action.level
+                hunger: 0,
+                score: state.score || 0,
+                level: action.level,
+                rate: action.rate,
+                interval: action.interval
             };
         default:
             return state;
