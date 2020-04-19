@@ -50,7 +50,7 @@ export default class PlayerScript extends BaseScript {
 
         this.mesh.addEventListener(PLAYER_GAME_WIN, this.handleWin);
 
-        Input.addEventListener('keyDown', debounce(this.handleKeyDown, 50));
+        Input.addEventListener('keyDown', this.handleKeyDown);
         Input.addEventListener('keyUp', this.handleKeyUp);
     }
 
