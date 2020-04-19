@@ -94,7 +94,7 @@ export default class MrBiggs extends BaseScene {
 
     setUpCamera = () => {
         window.camera = SceneManager.camera;
-        SceneManager.camera.position({ y: 19, z: 17 });
+        SceneManager.camera.position({ y: 25, z: 23 });
         SceneManager.camera.lookAt(0, 0, 0);
     };
 

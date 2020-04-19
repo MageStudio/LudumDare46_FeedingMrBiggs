@@ -117,10 +117,6 @@
     font-family: Pacifico, sans-serif;
 }
 
-.title-container.endgame {
-    font-size: 78px;
-}
-
 .dialog.menu-container .title-container h1::before {
     content: 'Ludum Dare 46:';
     font-family: Anton, monospace;
@@ -208,4 +204,8 @@
     margin-top: 35px;
     margin-right: 70px;
     margin-left: 36px;
+}
+
+.title-container.endgame h1 {
+    font-size: 42px !important;
 }
