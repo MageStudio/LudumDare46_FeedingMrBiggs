@@ -32,6 +32,12 @@ body {
     background: rgba(255, 255, 255, 0.6);
 }
 
+.dialog-container {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+}
+
 .dialog {
     position: absolute;
     display: block;
@@ -39,14 +45,15 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-
     width: 900px;
     height: 500px;
     margin: auto;
-    border: 2px solid #e17055;
+    /* border: 2px solid #079992; */
     border-radius: 8px;
-
+    background: white;
     padding-bottom: 32px;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
 }
 
 .gametitle {
@@ -78,18 +85,34 @@ body {
 .menu-button {
     background: transparent;
     width: 128px;
-    color: #e17055;
+    /* color: #e17055; */
     font-size: 32px;
     margin: auto;
     display: block;
-    border: none;
+    border: 1px solid black;
+    /* border: none; */
+    border-radius: 4px;
+}
+
+.action-button {
+    background: transparent;
+    width: 200px;
+    /* color: #e17055; */
+    font-size: 51px;
+    margin: auto;
+    display: block;
+    font-family: Anton, monospace;
+    border: 1px solid black;
+    /* border: none; */
     border-radius: 4px;
 }
 
 .menu-button:hover,
-.menu-button:active {
+.menu-button:active,
+.action-button:hover,
+.action-button:active {
     cursor: pointer;
-    border: none;
-    border-radius: 0px;
-    border-bottom: 2px solid #e17055;
+    border-radius: 4px;
+    border: 1px solid black;
+    border-bottom: 4px solid #e17055;
 }

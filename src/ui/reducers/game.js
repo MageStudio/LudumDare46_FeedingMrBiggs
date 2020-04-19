@@ -31,13 +31,13 @@ export default (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 hunger: state.hunger > GOOD_FOOD_DEC ? state.hunger - GOOD_FOOD_DEC : 0,
-                score: state.score + GOOD_FOOD_DEC
+                score: state.score + (GOOD_FOOD_DEC * 10)
             };
         case WRONG_FOOD:
             return {
                 ...state,
                 hunger: state.hunger < (MAX_HUNGER - BAD_FOOD_INC) ? state.hunger + BAD_FOOD_INC : MAX_HUNGER,
-                score: state.score > BAD_FOOD_INC ? state.score - BAD_FOOD_INC : 0
+                score: state.score > (BAD_FOOD_INC * 10) ? state.score - (BAD_FOOD_INC * 10) : 0
             };
         case CHANGE_FOOD:
             return {
@@ -54,7 +54,7 @@ export default (state = DEFAULT_STATE, action) => {
                 ...state,
                 over: false,
                 win: true,
-                score: state.score - (action.hunger / 10)
+                score: state.score - (action.hunger / 5)
             };
         case HUNGER_INCREASE:
             return {
@@ -65,7 +65,7 @@ export default (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 hunger: state.hunger < (MAX_HUNGER - MOVEMENT_INC) ? state.hunger + MOVEMENT_INC : MAX_HUNGER,
-            }
+            };
         case START_GAME:
             return {
                 ...DEFAULT_STATE,

@@ -68,3 +68,78 @@
 .desired-food img {
     height: 82px;
 }
+
+
+.dialog .title-container {
+    height: 50%;
+    /* top: -21px; */
+    font-size: 48px;
+    position: absolute;
+    width: calc(100% - 32px);
+    padding: 16px;
+    color: white;
+    background-size: contain;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.dialog .details {
+    position: absolute;
+    top: 59%;
+    height: auto;
+    width: calc(100% - 32px);
+    padding: 16px;
+}
+
+.dialog .action {
+    position: relative;
+    float: right;
+    top: 42px;
+}
+
+.dialog.win .title-container {
+    background: white url(/assets/textures/win_background.png);
+}
+
+.dialog.lose .title-container {
+    background: white url(/assets/textures/lose_background.png);
+}
+
+.dialog.menu-container .title-container {
+    background: white url(/assets/textures/menu_background.png);
+}
+
+.dialog .title-container h1 {
+    text-align: center;
+    margin: 42px;
+    text-shadow: 4px 4px black;
+    font-family: Pacifico, sans-serif;
+}
+
+.dialog.menu-container .title-container h1::before {
+    content: 'Ludum Dare 46:';
+    font-family: Anton, monospace;
+    font-size: 24px;
+    position: absolute;
+    color: black;
+    text-shadow: none;
+}
+
+.dialog .details h3 {
+    font-size: 128px;
+    margin: 0;
+    position: relative;
+    float: left;
+    max-width: 50%;
+    color: #78e08f;
+    text-shadow: 4px 4px #38ada9;
+}
+
+.dialog .details h3::before {
+    content: 'Score:';
+    font-size: 24px;
+    position: absolute;
+    left: 16px;
+    color: black;
+    text-shadow: none;
+}

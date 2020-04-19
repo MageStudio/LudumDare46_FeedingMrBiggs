@@ -32,10 +32,14 @@ const MainMenu = (props) => {
 
     return (
         <div className={classname}>
-            <div className='dialog menucontainer'>
-                <h1 className={'gametitle'}>Feeding Mr Biggs</h1>
-                { !about && getOptions(onStartClick, onAboutClick) }
-                { about && getAbout(onAboutClose) }
+            <div className={'dialog menu-container'}>
+                <div className={'title-container'}>
+                    <h1>Feeding Mr Biggs</h1>
+                </div>
+                <div className={'details'}>
+                    { !about && getOptions(onStartClick, onAboutClick) }
+                    { about && getAbout(onAboutClose) }
+                </div>
             </div>
         </div>
     )

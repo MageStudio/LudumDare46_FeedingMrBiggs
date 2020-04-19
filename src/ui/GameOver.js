@@ -13,11 +13,20 @@ export default class GameOver extends Component {
     render() {
         const { score } = this.props;
         return (
-            <div className={'dialog'}>
-                <h1>GAME OVER</h1>
-                <h3>{score}</h3>
-
-                <button onClick={this.onClick}>Try again?</button>
+            <div className={'dialog-container'}>
+                <div className={'dialog lose'}>
+                    <div className={'title-container'}>
+                        <h1>Game Over :(</h1>
+                    </div>
+                    <div className={'details'}>
+                        <h3>{score}</h3>
+                        <div className={'action'}>
+                            <button className={'action-button'} onClick={this.onClick}>
+                                Try Again?
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
