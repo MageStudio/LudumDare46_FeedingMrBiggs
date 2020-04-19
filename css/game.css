@@ -1,0 +1,70 @@
+.hunger-container {
+    position: absolute;
+    height: 200px;
+    width: 100%;
+}
+
+.hunger-container .progress-bar {
+    border-radius: 24px !important;
+    overflow: hidden;
+    display: block;
+    margin: auto;
+    width: 70%;
+    height: 50px;
+    position: relative;
+    top: 36px;
+    border: 4px solid black;
+}
+
+.hunger-container .progress-bar span {
+    display: block;
+    height: 100%;
+}
+
+.hunger-container .bar {
+    background: transparent;
+}
+
+.hunger-container .progress {
+    animation: none !important;
+    color: #fff;
+    /* padding: 5px; */
+    width: 0;
+    transition: width 300ms;
+    background: repeat #fad390 url(/assets/textures/seeds.png);
+    background-size: 48px;
+    /* border-right: 10px solid #fad390; */
+}
+
+.desired-food {
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    top: 16px;
+    left: 24px;
+}
+
+.desired-food::after {
+    content: 'Desired food';
+    color: black;
+    font-size: 15px;
+}
+
+.hunger-container .progress-label {
+    content: 'Hunger level';
+    color: black;
+    font-size: 24px;
+    position: relative;
+    /* color: #079992; */
+    /* letter-spacing: 10px; */
+    /* width: 100px; */
+    top: 35px;
+    z-index: 9999;
+    margin: auto;
+    display: block;
+    left: 16%;
+}
+
+.desired-food img {
+    height: 82px;
+}

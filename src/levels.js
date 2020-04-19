@@ -31,20 +31,43 @@ export const DIRECTIONS_MAP = {
         [RIGHT]: DIRECTIONS.UP,
         [DOWN]: DIRECTIONS.RIGHT
     }
-}
+};
 
 const TARGET = 9;
 const EMPTY = 0;
 const BLOCK = 1;
 
 const CORN = 2;
-const BURGER = 3;
-const APPLE = 4;
-const PIZZA = 5;
-const ORANGE = 6;
-const PASTA = 7;
+const CORN_LABEL = 'corn';
 
-const FOODS = [CORN, BURGER, APPLE, PIZZA, ORANGE, PASTA];
+const BURGER = 3;
+const BURGER_LABEL = 'burger';
+
+const APPLE = 4;
+const APPLE_LABEL = 'apple';
+
+const PIZZA = 5;
+const PIZZA_LABEL = 'pizza';
+
+const ORANGE = 6;
+const ORANGE_LABEL = 'orange';
+
+const PASTA = 7;
+const PASTA_LABEL = 'pasta';
+
+export const FOODS = [CORN, BURGER, APPLE, PIZZA, ORANGE, PASTA];
+export const FOODS_TYPES = [CORN_LABEL, BURGER_LABEL, APPLE_LABEL, PIZZA_LABEL, ORANGE_LABEL, PASTA_LABEL];
+
+export const foodLevels = [
+    [CORN_LABEL]
+];
+
+export const pickRandomFood = (level) => {
+    const available = foodLevels[level];
+    const index = Math.floor(Math.random() * available.length);
+
+    return available[index];
+};
 
 const level1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],

@@ -8,7 +8,9 @@ const assets = {
     Audio: {
         'collected': 'assets/audio/collected.mp3',
         'feeding': 'assets/audio/feeding.mp3',
-        'movement': 'assets/audio/movement.mp3'
+        'movement': 'assets/audio/movement.mp3',
+        'lose': 'assets/audio/lose.mp3',
+        'win': 'assets/audio/win.mp3'
     },
 
     Video: {},

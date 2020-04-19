@@ -3,9 +3,9 @@ import {
     Input,
     constants,
     SceneManager,
-    Universe,
     Sound,
-    debounce
+    debounce,
+    store
 } from 'mage-engine';
 
 import {
@@ -14,17 +14,13 @@ import {
     getInitialPlayerIndex,
     isAllowedMove,
     getPlayerPositionFromIndex,
-    getNewDirection,
     isCrateBox,
     isTarget,
-    DIRECTIONS,
-    DOWN,
-    UP,
-    LEFT,
-    RIGHT
+    DIRECTIONS
 } from './levels';
 
 import { CRATE_FOUND, FEEDING } from './constants';
+import {playerMovement} from './ui/actions/game';
 
 export default class PlayerScript extends BaseScript {
 
@@ -139,6 +135,7 @@ export default class PlayerScript extends BaseScript {
                 this.pressing = false;
 
                 this.checkIfCrateBox();
+                store.dispatch(playerMovement());
             });
         }
     }

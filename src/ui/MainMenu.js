@@ -32,7 +32,7 @@ const MainMenu = (props) => {
 
     return (
         <div className={classname}>
-            <div className='menucontainer'>
+            <div className='dialog menucontainer'>
                 <h1 className={'gametitle'}>Feeding Mr Biggs</h1>
                 { !about && getOptions(onStartClick, onAboutClick) }
                 { about && getAbout(onAboutClose) }

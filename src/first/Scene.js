@@ -14,7 +14,8 @@ import {
     Vector3,
     THREEColor,
     Universe,
-    store, Sound
+    store,
+    Sound
 } from 'mage-engine';
 
 import {
@@ -27,6 +28,8 @@ import {
 import PlayerScript from '../playerScript';
 import FloatScript from '../floatScript';
 import CrateScript from '../crateScript';
+
+import {changeFood, gameWin, goodFood, startGame, wrongFood} from '../ui/actions/game';
 
 import {
     FEEDING,
@@ -82,10 +85,6 @@ export default class FlatGrid extends BaseScene {
         SceneManager.camera.lookAt(0, 0, 0);
     };
 
-    onStateChange = (state) => {
-        console.log(state);
-    }
-
     createPlayer(id) {
         this.player = ModelsEngine.getModel('player');
         this.player.level = LEVEL;
@@ -103,7 +102,7 @@ export default class FlatGrid extends BaseScene {
 
             console.log('feeding', this.collected, crate);
 
-            // check if type matches the type the monster wants
+            this.checkIfFeedingRight(crate.type);
             crate.dispose();
             this.player.remove(crate);
 
@@ -115,12 +114,39 @@ export default class FlatGrid extends BaseScene {
                     pos: i
                 });
             });
+
+            this.checkIfWin();
         }
     };
+
+    checkIfWin = () => {
+        const { game } = store.getState();
+        const { hunger } = game;
+
+        console.log(this.crates, this.collected, hunger);
+
+        if (this.crates.length === 0 &&
+            this.collected.length === 0 &&
+            hunger < 100) {
+            store.dispatch(gameWin(hunger))
+        }
+    }
+
+    checkIfFeedingRight = (type) => {
+        const { game } = store.getState();
+        if (type === game.food) {
+            // good food
+            store.dispatch(goodFood());
+        } else {
+            store.dispatch(wrongFood());
+        }
+    }
 
     handleCrateFound = ({ row, col }) => {
         const index = this.crates.findIndex(c => c.index.row == row && c.index.col === col);
         const crate = this.crates[index];
+
+        this.crates.splice(index, 1); // removing from crates
 
         removeCrateBox(LEVEL, row, col);
         this.collected.push(crate);
@@ -145,6 +171,7 @@ export default class FlatGrid extends BaseScene {
         crate.position(position);
 
         crate.index = { row, col };
+        crate.type = type;
 
         this.crates.push(crate);
     }
@@ -174,6 +201,12 @@ export default class FlatGrid extends BaseScene {
         });
     }
 
+    setUpRandomFood = (level) => {
+        this.randomFoodInterval = setInterval(() => {
+            store.dispatch(changeFood(level));
+        }, 3000);
+    }
+
     playFeedingSound = () => {
         new Sound('feeding').start();
     }
@@ -182,14 +215,34 @@ export default class FlatGrid extends BaseScene {
         new Sound('collected').start();
     }
 
+    playWinSound = () => {
+        new Sound('win').start();
+    }
+
+    playLoseSound = () => {
+        new Sound('lose').start();
+    }
+
+    onStateChange = ({ game }) => {
+        if (game.over) {
+            clearInterval(this.randomFoodInterval);
+            this.playLoseSound();
+        } else if (game.win) {
+            clearInterval(this.randomFoodInterval);
+            this.playWinSound();
+        }
+    };
+
     onCreate() {
         this.crates = [];
         this.collected = [];
 
+        store.dispatch(startGame(LEVEL));
+
         ControlsManager.setOrbitControl();
         SceneManager.setShadowType('basic');
         SceneManager.setClearColor(BACKGROUND);
-        AudioEngine.setVolume(1); // 2
+        AudioEngine.setVolume(1.3); // 2
 
         ScriptManager.create('playerScript', PlayerScript);
         ScriptManager.create('floatScript', FloatScript);
@@ -202,6 +255,7 @@ export default class FlatGrid extends BaseScene {
 
         this.setUpLevel(LEVEL);
         this.createPlayer(LEVEL);
+        this.setUpRandomFood(LEVEL);
 
         this.enableUI(UI);
 

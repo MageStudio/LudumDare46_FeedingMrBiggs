@@ -4,6 +4,9 @@ import { connect } from 'mage-engine';
 import {closeAbout, closeMenu, openAbout} from './actions/menu';
 import MainMenu from './MainMenu';
 import HungerBar from './HungerBar';
+import {gameOver, hungerIncrease} from './actions/game';
+import GameOver from './GameOver';
+import GameWin from './GameWin';
 
 class UI extends Component {
 
@@ -12,16 +15,36 @@ class UI extends Component {
     }
 
     getContent() {
+
+        const { game, onHungerMax, onHungerIncrease } = this.props;
+        const {
+            hunger,
+            interval,
+            rate,
+            food,
+            over,
+            win
+        } = game;
+
         return (
             <div>
-                <HungerBar/>
+                <HungerBar
+                    desiredFood={food}
+                    onHungerMax={onHungerMax}
+                    onHungerIncrease={onHungerIncrease}
+                    rate={rate}
+                    hunger={hunger}
+                    over={over}
+                    win={win}
+                    interval={interval}/>
             </div>
         )
     }
 
 
     render() {
-        const { onCloseMenu, onCloseAbout, onOpenAbout, menu } = this.props;
+        const { onCloseMenu, onCloseAbout, onOpenAbout, menu, game } = this.props;
+        const { over, win, score, level } = game;
         const { open = false, about = false } = menu;
 
         return (
@@ -34,15 +57,18 @@ class UI extends Component {
                     onAboutClose={onCloseAbout}
                 />
                 { !open && this.getContent()}
+                { over && <GameOver score={score}/> }
+                { win && <GameWin score={score} level={level}/> }
             </div>
 
         )
     }
 }
 
-const mapStateToProps = ({ menu }) => {
+const mapStateToProps = ({ menu, game = {} }) => {
     return {
-        menu
+        menu,
+        game
     };
 };
 
@@ -50,7 +76,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onCloseMenu: () => dispatch(closeMenu()),
         onOpenAbout: () => dispatch(openAbout()),
-        onCloseAbout: () => dispatch(closeAbout())
+        onCloseAbout: () => dispatch(closeAbout()),
+        onHungerMax: () => dispatch(gameOver()),
+        onHungerIncrease: (hunger) => dispatch(hungerIncrease(hunger))
     };
 };
 
