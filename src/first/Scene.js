@@ -23,6 +23,7 @@ import {
     getPositionFromIndex,
     removeCrateBox,
     getFoodCratePositionFromIndex,
+    getTargetPositionFromIndex,
     CORN,
     PIZZA_LABEL,
     PIZZA,
@@ -69,8 +70,8 @@ export default class MrBiggs extends BaseScene {
 
     addSunlight() {
         window.sun = new SunLight({
-            color: BACKGROUND,
-            intensity: 0.3,
+            color: WHITE,
+            intensity: 0.5,
             position: { x: 20, y: 8, z: 0 },
             target: { x: 0, y: 0, z: 0 },
             name: 'sunlight',
@@ -191,18 +192,89 @@ export default class MrBiggs extends BaseScene {
         this.crates.push(crate);
     }
 
+    createMrBiggs = (row, col) => {
+        const mrbiggs = ModelsEngine.getModel('mrbiggs');
+        const bench = ModelsEngine.getModel('bench');
+        const block = ModelsEngine.getModel('block');
+
+        const crate1 = ModelsEngine.getModel('crate1');
+        const crate2 = ModelsEngine.getModel('crate2');
+        const crate3 = ModelsEngine.getModel('crate3');
+
+        const position = getTargetPositionFromIndex(row, col);
+
+        crate1.position(position);
+        crate1.setTextureMap('corn.crate');
+        crate2.position(position);
+        crate2.setTextureMap('burger.crate');
+        crate3.position(position);
+        crate3.setTextureMap('pizza.crate');
+
+        mrbiggs.position(position);
+        bench.position(position);
+        block.position(position);
+    }
+
+    createSurroundings = (row, col) => {
+        const position = getPositionFromIndex(row, col);
+        const randomGrass = Math.random() * 10;
+        const randomRock = Math.random() * 10;
+
+        if (randomGrass < 2.5) {
+            const grass1 = ModelsEngine.getModel('grass1');
+            const grass2 = ModelsEngine.getModel('grass2');
+
+            grass1.position(position);
+            grass2.position(position);
+        } else if (randomGrass < 4) {
+            const grass1 = ModelsEngine.getModel('grass1');
+            const grass2 = ModelsEngine.getModel('grass3');
+
+            grass1.position(position);
+            grass2.position(position);
+        } else if (randomGrass < 6) {
+            const grass = ModelsEngine.getModel('grass3');
+            const grass1 = ModelsEngine.getModel('grass1');
+            const grass2 = ModelsEngine.getModel('grass3');
+
+            grass1.position(position);
+            grass2.position(position);
+            grass.position(position);
+        }
+
+        if (randomRock < 3) {
+            const rock1 = ModelsEngine.getModel('pebble1');
+            const rock2 = ModelsEngine.getModel('pebble2');
+
+            rock1.position(position);
+            rock2.position(position);
+        } else if (randomRock < 6) {
+            const rock1 = ModelsEngine.getModel('pebble1');
+
+            rock1.position(position);
+        }
+
+    };
+
     setUpLevel() {
         const description = getLevelDescription(this.level);
         const models = [];
 
         description.forEach((row, rowIndex) => {
             row.forEach((el, colIndex) => {
-                if (!el) return;
+                if (el === 0) return;
+                if (el === -1) {
+                    this.createMrBiggs(rowIndex, colIndex);
+                    return;
+                };
 
                 const position = getPositionFromIndex(rowIndex, colIndex);
                 const model = ModelsEngine.getModel('block');
+                model.setColor(0xeeeeee);
                 model.position(position);
                 models.push(model);
+
+                this.createSurroundings(rowIndex, colIndex);
 
                 if (el === CORN) {
                     this.createFoodCrate(rowIndex, colIndex, CORN_LABEL);
@@ -228,9 +300,24 @@ export default class MrBiggs extends BaseScene {
                     this.createFoodCrate(rowIndex, colIndex, PASTA_LABEL);
                 }
 
-
+                if (el === 9) {
+                    this.createTarget(rowIndex, colIndex);
+                }
             });
         });
+    }
+
+    createTarget(row, col) {
+        const position = getTargetPositionFromIndex(row, col);
+
+        const target = ModelsEngine.getModel('target');
+
+        target.setColor(0x82ccdd);
+
+        target.position(position);
+        target.addScript('floatScript');
+
+        window.target = target;
     }
 
     setUpRandomFood = () => {
@@ -301,7 +388,7 @@ export default class MrBiggs extends BaseScene {
 
         this.enableUI(UI, { level: this.level });
 
-        PostProcessingEngine.add('HueSaturationEffect', { hue: 0.1, saturation: 0.3 });
-        PostProcessingEngine.add('DepthOfField', { focus: 19.85, aperture: 0.0001, maxblur: 0.008 });
+        PostProcessingEngine.add('HueSaturationEffect', { hue: 0.1, saturation: 0.1 });
+        PostProcessingEngine.add('DepthOfField', { focus: 19.85, aperture: 0.0001, maxblur: 0.005 });
     }
 }

@@ -1,0 +1,122 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.1.45",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "crate2"
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0.12258674204349518,
+                0.05894463136792183,
+                0.03824359551072121
+            ],
+            "name" : "bench.material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.2228119820356369,
+                    0.1362755000591278,
+                    0.022643188014626503,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Cube.023",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 24,
+            "max" : [
+                -2.1441261768341064,
+                5.3931403160095215,
+                2.7114663124084473
+            ],
+            "min" : [
+                -3.6061666011810303,
+                4.044169902801514,
+                1.2494258880615234
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 24,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 24,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5123,
+            "count" : 36,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 288,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 288,
+            "byteOffset" : 288
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 192,
+            "byteOffset" : 576
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 72,
+            "byteOffset" : 768
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 840,
+            "uri" : "data:application/octet-stream;base64,b8tmwJuUrEB4EK8/b8tmwNdpgUB4EK8/yzlfwNdpgUCqiC1AyzlfwJuUrECqiC1AAcsQwJuUrEAw7Z8/AcsQwNdpgUAw7Z8/b8tmwNdpgUB4EK8/b8tmwJuUrEB4EK8/XTkJwJuUrEAG9yVAXTkJwNdpgUAG9yVAAcsQwNdpgUAw7Z8/AcsQwJuUrEAw7Z8/yzlfwJuUrECqiC1AyzlfwNdpgUCqiC1AXTkJwNdpgUAG9yVAXTkJwJuUrEAG9yVAb8tmwNdpgUB4EK8/AcsQwNdpgUAw7Z8/XTkJwNdpgUAG9yVAyzlfwNdpgUCqiC1AXTkJwJuUrEAG9yVAAcsQwJuUrEAw7Z8/b8tmwJuUrEB4EK8/yzlfwJuUrECqiC1ApwN/vwAAAABQjLM9pwN/vwAAAABQjLM9pwN/vwAAAABQjLM9pwN/vwAAAABQjLM9UIyzvQAAAACnA3+/UIyzvQAAAACnA3+/UIyzvQAAAACnA3+/UIyzvQAAAACnA3+/pwN/PwAAAABQjLO9pwN/PwAAAABQjLO9pwN/PwAAAABQjLO9pwN/PwAAAABQjLO9UIyzPQAAAACnA38/UIyzPQAAAACnA38/UIyzPQAAAACnA38/UIyzPQAAAACnA38/AAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgL8AAACAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAgPwAAQD8AAMA+AABAPwAAwD4AAIA/AAAgPwAAgD8AACA/AAAAPwAAwD4AAAA/AADAPgAAQD8AACA/AABAPwAAID8AAIA+AADAPgAAgD4AAMA+AAAAPwAAID8AAAA/AAAgPwAAAAAAAMA+AAAAAAAAwD4AAIA+AAAgPwAAgD4AAAA+AAAAPwAAwD4AAAA/AADAPgAAgD4AAAA+AACAPgAAID8AAIA+AAAgPwAAAD8AAGA/AAAAPwAAYD8AAIA+AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEwAQABIAFAAVABYAFAAWABcA"
+        }
+    ]
+}

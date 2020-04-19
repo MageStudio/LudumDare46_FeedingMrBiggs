@@ -12,7 +12,7 @@ export default class FloatScript extends BaseScript {
 
     start(mesh) {
         this.mesh = mesh;
-        this.max = Math.random() * 0.4;
+        this.max = 0.4;
         this.angle = 0;
     }
 
@@ -20,7 +20,7 @@ export default class FloatScript extends BaseScript {
         this.angle += increase;
 
         this.mesh.position({
-            y: Math.sin(this.angle) * this.max
+            y: 3 + Math.sin(this.angle) * this.max
         });
     }
 }

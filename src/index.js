@@ -30,7 +30,18 @@ const assets = {
 
     Models: {
         'block': 'assets/models/block.gltf',
-        'player': 'assets/models/player.gltf'
+        'player': 'assets/models/player.gltf',
+        'target': 'assets/models/target.gltf',
+        'mrbiggs': 'assets/models/mrBiggs.gltf',
+        'bench': 'assets/models/bench.gltf',
+        'crate1': 'assets/models/crate1.gltf',
+        'crate2': 'assets/models/crate2.gltf',
+        'crate3': 'assets/models/crate3.gltf',
+        'grass1': 'assets/models/grass1.gltf',
+        'grass2': 'assets/models/grass2.gltf',
+        'grass3': 'assets/models/grass3.gltf',
+        'pebble1': 'assets/models/pebble1.gltf',
+        'pebble2': 'assets/models/pebble2.gltf'
     },
 
     General: {}
