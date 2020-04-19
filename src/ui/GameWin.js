@@ -8,7 +8,9 @@ export default class GameWin extends Component {
 
     onClick = () => {
         const { level } = this.props;
-        console.log(level + 1);
+        const next = (level + 1);
+
+        location.search = `?lvl=${next}`;
     }
 
     render() {

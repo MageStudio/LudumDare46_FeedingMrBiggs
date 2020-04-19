@@ -43,9 +43,7 @@ import UI from '../ui/UI';
 const WHITE = 0Xffffff;
 const BACKGROUND = 0xb8e994;
 
-const LEVEL = 0;
-
-export default class FlatGrid extends BaseScene {
+export default class MrBiggs extends BaseScene {
 
     addAmbientLight() {
         window.ambient = new AmbientLight({
@@ -87,7 +85,7 @@ export default class FlatGrid extends BaseScene {
 
     createPlayer(id) {
         this.player = ModelsEngine.getModel('player');
-        this.player.level = LEVEL;
+        this.player.level = this.level;
         this.player.addScript('playerScript');
 
         this.player.addEventListener(CRATE_FOUND, this.handleCrateFound);
@@ -148,7 +146,7 @@ export default class FlatGrid extends BaseScene {
 
         this.crates.splice(index, 1); // removing from crates
 
-        removeCrateBox(LEVEL, row, col);
+        removeCrateBox(this.level, row, col);
         this.collected.push(crate);
 
         crate.dispatchEvent({
@@ -236,8 +234,11 @@ export default class FlatGrid extends BaseScene {
     onCreate() {
         this.crates = [];
         this.collected = [];
+        const { lvl = 0 } = this.options;
 
-        store.dispatch(startGame(LEVEL));
+        this.level = lvl;
+
+        store.dispatch(startGame(lvl));
 
         ControlsManager.setOrbitControl();
         SceneManager.setShadowType('basic');
@@ -253,9 +254,9 @@ export default class FlatGrid extends BaseScene {
         this.addSunlight();
         this.setUpCamera();
 
-        this.setUpLevel(LEVEL);
-        this.createPlayer(LEVEL);
-        this.setUpRandomFood(LEVEL);
+        this.setUpLevel(lvl);
+        this.createPlayer(lvl);
+        this.setUpRandomFood(lvl);
 
         this.enableUI(UI);
 
