@@ -1,61 +1,44 @@
 import { Component } from 'inferno';
-import { connect } from 'mage-engine';
 
-class MainMenu extends Component {
+const getOptions = (onStartClick, onAboutClick) => (
+    <ul className='menu'>
+        <li>
+            <button className='menu-button' onClick={onStartClick}>
+                START
+            </button>
+        </li>
+        <li>
+            <button className='menu-button' onClick={onAboutClick}>
+                ABOUT
+            </button>
+        </li>
+    </ul>
+);
 
-    constructor(props) {
-        super(props);
+const getAbout = (onAboutClose) => (
+    <div>
+        <h3>
+            Built with mage Engine. By Marco Stagni
+        </h3>
+        <button onClick={onAboutClose}>
+            BACK
+        </button>
+    </div>
+)
 
-        this.state = {
-            overlayVisible: true
-        }
-    }
+const MainMenu = (props) => {
+    const { visible, about, onStartClick, onAboutClick, onAboutClose } = props;
+    const classname = 'overlay '.concat(visible ? 'visible' : 'invisible');
 
-    onStartButtonClick = () => {
-        const { onStartButtonClick } = this.props;
-
-        this.setState({
-            overlayVisible: false
-        });
-
-        onStartButtonClick();
-    };
-
-    render() {
-        const { overlayVisible } = this.state;
-        const classname = 'overlay '.concat(overlayVisible ? 'visible' : 'invisible');
-
-        return (
-            <div className={classname}>
-                <div className='menucontainer'>
-                    <h1 className={'gametitle'}>The Wrong Hole</h1>
-                    <ul className='menu'>
-                        <li>
-                            <button className='menu-button' onClick={this.onStartButtonClick}>
-                                START
-                            </button>
-                        </li>
-                        <li>
-                            <button className='menu-button' onClick={this.onResumeButtonClick}>
-                                RESUME
-                            </button>
-                        </li>
-                        <li>
-                            <button className='menu-button' onClick={this.onAboutButtonClick}>
-                                ABOUT
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+    return (
+        <div className={classname}>
+            <div className='menucontainer'>
+                <h1 className={'gametitle'}>Feeding Mr Biggs</h1>
+                { !about && getOptions(onStartClick, onAboutClick) }
+                { about && getAbout(onAboutClose) }
             </div>
-        )
-    }
-}
+        </div>
+    )
+};
 
-const mapStateToProps = (state) => {
-    console.log(state);
-
-    return {};
-}
-
-export default connect(mapStateToProps, null)(MainMenu);
+export default MainMenu;

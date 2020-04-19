@@ -14,16 +14,14 @@ import {
     Vector3,
     THREEColor,
     Universe,
-    store
+    store, Sound
 } from 'mage-engine';
 
 import {
     getLevelDescription,
     getPositionFromIndex,
-    getInitialPlayerPositionForLevel,
     removeCrateBox,
-    getFoodCratePositionFromIndex,
-    CENTER
+    getFoodCratePositionFromIndex
 } from '../levels';
 
 import PlayerScript from '../playerScript';
@@ -37,15 +35,10 @@ import {
     COLLECTED
 } from '../constants';
 
-import MainMenu from '../ui/MainMenu';
+import UI from '../ui/UI';
 
-const BACKGROUND_COLOR = 0x81ecec;//0x55efc4;//0xa8e6cf;
-const GROUND_COLOR = 0xdddddd;
-const PLANE_COLOR = 0xfab1a0;
-const CAR_COLOR = 0xa8e6cf;
-const SUN_COLOR = 0xe17055;//0x555555;
-const AMBIENT_LIGHT_COLOR = 0xffffff;
 const WHITE = 0Xffffff;
+const BACKGROUND = 0xb8e994;
 
 const LEVEL = 0;
 
@@ -61,7 +54,7 @@ export default class FlatGrid extends BaseScene {
 
     addSunlight() {
         window.sun = new SunLight({
-            color: PLANE_COLOR,//PLANE_COLOR,//SUN_COLOR,
+            color: BACKGROUND,
             intensity: 0.3,
             position: { x: 20, y: 8, z: 0 },
             target: { x: 0, y: 0, z: 0 },
@@ -96,9 +89,6 @@ export default class FlatGrid extends BaseScene {
     createPlayer(id) {
         this.player = ModelsEngine.getModel('player');
         this.player.level = LEVEL;
-
-        //this.player.setTextureMap('corn.crate');
-
         this.player.addScript('playerScript');
 
         this.player.addEventListener(CRATE_FOUND, this.handleCrateFound);
@@ -115,7 +105,16 @@ export default class FlatGrid extends BaseScene {
 
             // check if type matches the type the monster wants
             crate.dispose();
-            
+            this.player.remove(crate);
+
+            this.playFeedingSound();
+
+            this.collected.forEach((c, i) => {
+                c.dispatchEvent({
+                    type: UPDATE_RELATIVE_POSITION,
+                    pos: i
+                });
+            });
         }
     };
 
@@ -131,6 +130,7 @@ export default class FlatGrid extends BaseScene {
             length: this.collected.length
         });
 
+        this.playCollectedSound();
         this.player.add(crate);
     }
 
@@ -162,20 +162,24 @@ export default class FlatGrid extends BaseScene {
                 model.position(position);
                 models.push(model);
 
-                if (el == 2) {
+                if (el === 2) {
                     this.createFoodCrate(rowIndex, colIndex, 'corn');
                 }
 
-                if (el == 3) {
+                if (el === 3) {
                     this.createFoodCrate(rowIndex, colIndex, 'pizza');
                 }
 
             });
-        })
+        });
+    }
 
-        models.forEach(model => {
-            model.addScript('floatScript');
-        })
+    playFeedingSound = () => {
+        new Sound('feeding').start();
+    }
+
+    playCollectedSound = () => {
+        new Sound('collected').start();
     }
 
     onCreate() {
@@ -184,8 +188,8 @@ export default class FlatGrid extends BaseScene {
 
         ControlsManager.setOrbitControl();
         SceneManager.setShadowType('basic');
-        SceneManager.setClearColor(PLANE_COLOR);
-        AudioEngine.setVolume(0.1); // 2
+        SceneManager.setClearColor(BACKGROUND);
+        AudioEngine.setVolume(1); // 2
 
         ScriptManager.create('playerScript', PlayerScript);
         ScriptManager.create('floatScript', FloatScript);
@@ -199,13 +203,7 @@ export default class FlatGrid extends BaseScene {
         this.setUpLevel(LEVEL);
         this.createPlayer(LEVEL);
 
-        this.enableUI(MainMenu, {
-            onStartButtonClick: () => {}
-        });
-
-
-        //ScriptManager.create('carScript', CarScript);
-        //ScriptManager.create('rotation', Rotation);
+        this.enableUI(UI);
 
         PostProcessingEngine.add('HueSaturationEffect', { hue: 0.1, saturation: 0.3 });
         PostProcessingEngine.add('DepthOfField', { focus: 19.85, aperture: 0.0001, maxblur: 0.008 });

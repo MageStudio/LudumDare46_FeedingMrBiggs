@@ -4,6 +4,7 @@ import {
     constants,
     SceneManager,
     Universe,
+    Sound,
     debounce
 } from 'mage-engine';
 
@@ -115,6 +116,10 @@ export default class PlayerScript extends BaseScript {
         }
     }
 
+    playMovementSound() {
+        new Sound('movement').start();
+    }
+
     updatePosition(dt) {
 
         if (!this.moving && this.pressing) {
@@ -128,6 +133,7 @@ export default class PlayerScript extends BaseScript {
 
             this.moving = true;
             this.pressing = false;
+            this.playMovementSound();
             this.mesh.goTo(this.currentPosition, 300).then(() => {
                 this.moving = false;
                 this.pressing = false;

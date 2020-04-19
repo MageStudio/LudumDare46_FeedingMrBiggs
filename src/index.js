@@ -6,7 +6,9 @@ store.createStore(reducers, {}, true);
 
 const assets = {
     Audio: {
-        'engine': 'assets/audio/engine.mp3'
+        'collected': 'assets/audio/collected.mp3',
+        'feeding': 'assets/audio/feeding.mp3',
+        'movement': 'assets/audio/movement.mp3'
     },
 
     Video: {},

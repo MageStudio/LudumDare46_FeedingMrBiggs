@@ -58,7 +58,7 @@ body {
 }
 
 .gametitle::before {
-    content: 'Games nobody asked for:';
+    content: 'Ludum Dare 46:';
     color: #2d3436;
     font-size: 28px;
     position: absolute;

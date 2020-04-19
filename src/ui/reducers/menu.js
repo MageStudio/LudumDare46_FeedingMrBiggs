@@ -1,10 +1,13 @@
 import {
     OPEN_MENU,
-    CLOSE_MENU
+    CLOSE_MENU,
+    OPEN_ABOUT,
+    CLOSE_ABOUT
 } from '../actions/types';
 
 const DEFAULT_STATE = {
-    menuopen: false
+    open: true,
+    about: false
 };
 
 export default (state = DEFAULT_STATE, action = {}) => {
@@ -12,12 +15,22 @@ export default (state = DEFAULT_STATE, action = {}) => {
         case OPEN_MENU:
             return {
                 ...state,
-                menuopen: true
+                open: true
             };
         case CLOSE_MENU:
             return {
                 ...state,
-                menuopen: false
+                open: false
+            };
+        case OPEN_ABOUT:
+            return {
+                ...state,
+                about: true
+            };
+        case CLOSE_ABOUT:
+            return {
+                ...state,
+                about: false
             };
         default:
             return state;
