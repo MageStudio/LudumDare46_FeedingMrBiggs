@@ -70,20 +70,15 @@ export default class PlayerScript extends BaseScript {
 
         const tryingToFeed = e.event.keyCode === 70;
 
-        console.log('inside handle keydown', e);
-
         this.pressing = forward || backwards || right || left;
 
         if (backwards) {
-            this.currentDirection = DIRECTIONS.DOWN;//getNewDirection(this.currentDirection.type, DOWN)
-            console.log(this.currentDirection);
+            this.currentDirection = DIRECTIONS.DOWN;
 
         } else if (right) {
-            this.currentDirection = DIRECTIONS.RIGHT;//getNewDirection(this.currentDirection.type, RIGHT);
-            console.log(this.currentDirection);
+            this.currentDirection = DIRECTIONS.RIGHT;
         } else if (left) {
-            this.currentDirection = DIRECTIONS.LEFT;//getNewDirection(this.currentDirection.type, LEFT);
-            console.log(this.currentDirection);
+            this.currentDirection = DIRECTIONS.LEFT;
         } else if (forward) {
             this.currentDirection = DIRECTIONS.UP;
         } else if (tryingToFeed) {
@@ -103,7 +98,6 @@ export default class PlayerScript extends BaseScript {
 
     checkIfOnTarget = () => {
         if (isTarget(this.mesh.level, this.currentIndex.row, this.currentIndex.col)) {
-            console.log('robot on target');
             this.mesh.dispatchEvent({
                 type: FEEDING
             });

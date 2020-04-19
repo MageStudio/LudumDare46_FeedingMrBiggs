@@ -105,15 +105,14 @@ export default class MrBiggs extends BaseScene {
 
         this.player.addEventListener(CRATE_FOUND, this.handleCrateFound);
         this.player.addEventListener(FEEDING, this.handleFeeding);
+
+        this.elements.push(this.player);
     }
 
     handleFeeding = () => {
-        console.log('maybe feeding');
         if (this.collected.length) {
             const crate = this.collected[0];
             this.collected = this.collected.slice(1);
-
-            console.log('feeding', this.collected, crate);
 
             this.checkIfFeedingRight(crate.type);
             crate.dispose();
@@ -135,8 +134,6 @@ export default class MrBiggs extends BaseScene {
     checkIfWin = () => {
         const { game } = store.getState();
         const { hunger } = game;
-
-        console.log(this.crates, this.collected, hunger);
 
         if (this.crates.length === 0 &&
             this.collected.length === 0 &&
@@ -190,6 +187,8 @@ export default class MrBiggs extends BaseScene {
         crate.type = type;
 
         this.crates.push(crate);
+
+        this.elements.push(crate);
     }
 
     createMrBiggs = (row, col) => {
@@ -213,6 +212,14 @@ export default class MrBiggs extends BaseScene {
         mrbiggs.position(position);
         bench.position(position);
         block.position(position);
+
+        this.elements.push(mrbiggs);
+        this.elements.push(bench);
+        this.elements.push(block);
+
+        this.elements.push(crate1);
+        this.elements.push(crate2);
+        this.elements.push(crate3);
     }
 
     createSurroundings = (row, col) => {
@@ -226,12 +233,18 @@ export default class MrBiggs extends BaseScene {
 
             grass1.position(position);
             grass2.position(position);
+
+            this.elements.push(grass1);
+            this.elements.push(grass2);
         } else if (randomGrass < 4) {
             const grass1 = ModelsEngine.getModel('grass1');
             const grass2 = ModelsEngine.getModel('grass3');
 
             grass1.position(position);
             grass2.position(position);
+
+            this.elements.push(grass1);
+            this.elements.push(grass2);
         } else if (randomGrass < 6) {
             const grass = ModelsEngine.getModel('grass3');
             const grass1 = ModelsEngine.getModel('grass1');
@@ -240,6 +253,10 @@ export default class MrBiggs extends BaseScene {
             grass1.position(position);
             grass2.position(position);
             grass.position(position);
+
+            this.elements.push(grass);
+            this.elements.push(grass2);
+            this.elements.push(grass1);
         }
 
         if (randomRock < 3) {
@@ -248,17 +265,21 @@ export default class MrBiggs extends BaseScene {
 
             rock1.position(position);
             rock2.position(position);
+
+            this.elements.push(rock1);
+            this.elements.push(rock2);
         } else if (randomRock < 6) {
             const rock1 = ModelsEngine.getModel('pebble1');
 
             rock1.position(position);
+
+            this.elements.push(rock1);
         }
 
     };
 
     setUpLevel() {
         const description = getLevelDescription(this.level);
-        const models = [];
 
         description.forEach((row, rowIndex) => {
             row.forEach((el, colIndex) => {
@@ -272,7 +293,8 @@ export default class MrBiggs extends BaseScene {
                 const model = ModelsEngine.getModel('block');
                 model.setColor(0xeeeeee);
                 model.position(position);
-                models.push(model);
+
+                this.elements.push(model);
 
                 this.createSurroundings(rowIndex, colIndex);
 
@@ -317,7 +339,7 @@ export default class MrBiggs extends BaseScene {
         target.position(position);
         target.addScript('floatScript');
 
-        window.target = target;
+        this.elements.push(target);
     }
 
     setUpRandomFood = () => {
@@ -343,7 +365,6 @@ export default class MrBiggs extends BaseScene {
     }
 
     onStateChange = ({ game }) => {
-        console.log(game);
         if (game.over) {
             clearInterval(this.randomFoodInterval);
             this.playLoseSound();
@@ -353,11 +374,24 @@ export default class MrBiggs extends BaseScene {
         }
     };
 
+    dispose() {
+        super.dispose();
+
+        this.elements.forEach(el => {
+            try {
+                el.dispose();
+                el = null;
+            } catch(e) {}
+        });
+        this.elements = [];
+    }
+
     onCreate() {
+        this.elements = [];
         this.crates = [];
         this.collected = [];
         const { path = 0 } = this.options;
-        console.log(this.options);
+
         this.level = Number(path.replace('/', '')) || 0;
 
         store.dispatch(startGame(this.level));
